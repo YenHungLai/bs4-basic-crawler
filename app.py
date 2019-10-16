@@ -34,9 +34,7 @@ app = Flask(__name__)
 
 class Crawler():
     def __init__(self, url):
-        # self.scheme, self.netloc, self.path, *_ = urlparse(url)
-        self.scheme = urlparse(url).scheme
-        self.netloc = urlparse(url).netloc
+        self.scheme, self.netloc, self.path, *_ = urlparse(url)
         self.page = requests.get(url)
         self.soup = BeautifulSoup(self.page.text, "html.parser")
 
