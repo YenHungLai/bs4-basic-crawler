@@ -123,6 +123,6 @@ def crawl():
     }
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
     # Do not use run() in production
-    # app.run(debug=True)
+    app.run(debug=True)
