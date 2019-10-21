@@ -1,3 +1,7 @@
+'''
+TODO:
+- Handle CORS
+'''
 import requests
 import os
 from pprint import pprint
@@ -55,7 +59,7 @@ class Crawler():
             # Is this cross platform?
             filename = os.path.basename(img.get('src'))
             img_urls.append(
-                {'filename': filename, 'url': f'{self.scheme}://{self.netloc}' + img.get('src')})
+                {'filename': filename, 'url': f'{self.scheme}://{self.netloc}/' + img.get('src')})
 
         return img_urls
 
