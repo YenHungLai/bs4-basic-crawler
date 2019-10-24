@@ -86,7 +86,8 @@ class Crawler():
         headers = []
         for h1 in self.soup.select('h1'):
             # print(h1)
-            headers.append(h1.get_text())
+            if h1.get_text() != '':
+                headers.append(h1.get_text())
 
         return headers
 
@@ -94,7 +95,8 @@ class Crawler():
         headers = []
         for h2 in self.soup.select('h2'):
             # print(h2)
-            headers.append(h2.get_text())
+            if h2.get_text() != '':
+                headers.append(h2.get_text())
 
         return headers
 
@@ -102,7 +104,8 @@ class Crawler():
         headers = []
         for h3 in self.soup.select('h3'):
             # print(h3)
-            headers.append(h3.get_text())
+            if h3.get_text() != '':
+                headers.append(h3.get_text())
 
         return headers
 
@@ -110,7 +113,8 @@ class Crawler():
         paragraphs = []
         for p in self.soup.select('p'):
             # print(p)
-            paragraphs.append(p.get_text())
+            if p.get_text() != '':
+                paragraphs.append(p.get_text())
 
         return paragraphs
 
