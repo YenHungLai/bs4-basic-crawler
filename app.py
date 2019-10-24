@@ -7,7 +7,6 @@ import os
 from pprint import pprint
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
-# Flask
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -56,10 +55,16 @@ class Crawler():
     def get_images(self):
         img_urls = []
         for img in self.soup.select('img'):
-            # Is this cross platform?
-            filename = os.path.basename(img.get('src'))
-            img_urls.append(
-                {'filename': filename, 'url': f'{self.scheme}://{self.netloc}/' + img.get('src')})
+            src = img.get('src')
+            if src:
+                # Is this cross platform?
+                filename = os.path.basename(img.get('src'))
+                if src.startswith('http'):
+                    img_urls.append(
+                        {'filename': filename, 'url': img.get('src')})
+                else:
+                    img_urls.append(
+                        {'filename': filename, 'url': f'{self.scheme}://{self.netloc}/' + img.get('src')})
 
         return img_urls
 
@@ -67,19 +72,20 @@ class Crawler():
         links = []
         for a in self.soup.select('a'):
             href = a.get('href')
-            # Better way to check if is URL?
-            if '/' in href:
-                if self.netloc in href:
-                    links.append(href)
-                else:
-                    links.append(f'{self.scheme}://{self.netloc}' + href)
+            if href:
+                # Better way to check if is URL?
+                if '/' in href:
+                    if self.netloc in href:
+                        links.append(href)
+                    else:
+                        links.append(f'{self.scheme}://{self.netloc}' + href)
 
         return links
 
     def get_h1(self):
         headers = []
         for h1 in self.soup.select('h1'):
-            print(h1)
+            # print(h1)
             headers.append(h1.get_text())
 
         return headers
@@ -87,7 +93,7 @@ class Crawler():
     def get_h2(self):
         headers = []
         for h2 in self.soup.select('h2'):
-            print(h2)
+            # print(h2)
             headers.append(h2.get_text())
 
         return headers
@@ -95,7 +101,7 @@ class Crawler():
     def get_h3(self):
         headers = []
         for h3 in self.soup.select('h3'):
-            print(h3)
+            # print(h3)
             headers.append(h3.get_text())
 
         return headers
@@ -103,7 +109,7 @@ class Crawler():
     def get_p(self):
         paragraphs = []
         for p in self.soup.select('p'):
-            print(p)
+            # print(p)
             paragraphs.append(p.get_text())
 
         return paragraphs
@@ -114,7 +120,7 @@ def crawl():
     url = request.args.get('url')
     print(url)
     my_crawler = Crawler(url)
-    my_crawler.get_images()
+    # my_crawler.get_images()
     return {
         'title': my_crawler.get_title(),
         'favicon': my_crawler.get_favicon(),
