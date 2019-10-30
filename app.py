@@ -8,8 +8,10 @@ from pprint import pprint
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # url = 'https://www.w3schools.com/python/default.asp'
 # Tuple unpacking
@@ -135,7 +137,6 @@ def crawl():
         'h3': my_crawler.get_h3(),
         'p': my_crawler.get_p()
     }
-
 
 if __name__ == '__main__':
     # Do not use run() in production
