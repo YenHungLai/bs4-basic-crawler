@@ -1,13 +1,10 @@
-'''
-TODO:
-- Handle CORS
-'''
 import requests
 import os
+import csv
 from pprint import pprint
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -137,6 +134,30 @@ def crawl():
         'h3': my_crawler.get_h3(),
         'p': my_crawler.get_p()
     }
+
+
+@app.route('/download')
+def download():
+    url = request.args.get('url')
+    my_crawler = Crawler(url)
+    temp = {
+        'title': my_crawler.get_title(),
+        'favicon': my_crawler.get_favicon(),
+        'images': my_crawler.get_images(),
+        'links': my_crawler.get_links(),
+        'h1': my_crawler.get_h1(),
+        'h2': my_crawler.get_h2(),
+        'h3': my_crawler.get_h3(),
+        'p': my_crawler.get_p()
+    }
+
+    with open('results.csv', 'w', newline='') as csvfile:
+        fieldnames = ['title', 'favicon', 'images',
+                      'links', 'h1', 'h2', 'h3', 'p']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter='/t')
+        writer.writeheader()
+
+    return send_from_directory('./', 'results.csv', as_attachment=True)
 
 if __name__ == '__main__':
     # Do not use run() in production
